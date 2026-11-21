@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chess Coach</title>
+  <link rel="stylesheet" href="vendor/chessground.base.css">
+  <link rel="stylesheet" href="vendor/chessground.brown.css">
+  <link rel="stylesheet" href="vendor/chessground.cburnett.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Chess Coach</h1>
+    <span class="private">Private: your games stay on this computer</span>
+  </header>
+
+  <main>
+    <section class="board-column">
+      <div id="board" class="cg-wrap"></div>
+      <div id="nav" class="nav">
+        <button id="nav-start" title="First position" aria-label="First position">⏮</button>
+        <button id="nav-prev" title="Previous move (left arrow)" aria-label="Previous move">◀</button>
+        <button id="nav-next" title="Next move (right arrow)" aria-label="Next move">▶</button>
+        <button id="nav-end" title="Last position" aria-label="Last position">⏭</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div id="status" class="status" role="status"></div>
+      <div id="opening" class="opening" hidden></div>
+
+      <div id="play-controls" class="controls">
+        <label class="level">Coach strength
+          <select id="level"></select>
+        </label>
+        <div class="button-row">
+          <button id="retry" class="primary" hidden>Try again</button>
+          <button id="swap" class="primary" title="Take over the other side. The coach plays the side you were playing.">Swap sides</button>
+          <button id="review" title="Analyse the position on the board and the whole game">Analyse</button>
+        </div>
+        <div class="toggles">
+          <label><input type="checkbox" id="auto-analyse"> Auto-analyse each move</label>
+          <label><input type="checkbox" id="show-best"> Show best move</label>
+          <label title="Move White and Black yourself. Untick to let the coach play the other side again."><input type="checkbox" id="both-sides"> Play both sides</label>
+        </div>
+      </div>
+
+      <div id="review-controls" class="controls button-row" hidden>
+        <button id="continue" class="primary" title="Go back to the latest position and keep playing">Continue game</button>
+        <button id="play-here" title="Start a new game from the position on the board">Play from here</button>
+      </div>
+
+      <div class="button-row secondary-row">
+        <button id="new-game">New game</button>
+        <button id="setup">Paste a game or position</button>
+        <button id="saved">Saved games</button>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button id="tab-analysis" type="button" role="tab" aria-controls="analysis-tab">Analysis</button>
+        <button id="tab-chat" type="button" role="tab" aria-controls="chat-tab">Ask the coach</button>
+      </div>
+
+      <div id="chat-tab" role="tabpanel" hidden>
+        <div class="chat-head">
+          <p id="chat-about" class="chat-about"></p>
+          <button id="chat-clear" type="button" title="Delete this conversation and start fresh" hidden>Clear chat</button>
+        </div>
+        <p id="chat-offline" class="chat-offline" hidden></p>
+        <div id="chat-log" class="chat-log" aria-live="polite"></div>
+        <div id="chat-suggestions" class="chat-suggestions"></div>
+        <form id="chat-form" class="chat-form">
+          <textarea id="chat-input" rows="2" maxlength="2000" placeholder="Ask about this position, or a move like Nf3" aria-label="Your question"></textarea>
+          <button id="chat-send" class="primary" type="submit">Ask</button>
+        </form>
+      </div>
+
+      <div id="analysis-tab" role="tabpanel">
+      <div id="review-panel" hidden>
+        <div id="explain" class="explain"></div>
+        <div class="chart-card">
+          <h2 id="chart-title"></h2>
+          <div id="chart" class="chart"></div>
+          <div id="tooltip" class="tooltip" hidden></div>
+          <div class="key">
+            <span><i class="dot blunder"></i>Blunder</span>
+            <span><i class="dot mistake"></i>Mistake</span>
+            <span><i class="dot inaccuracy"></i>Inaccuracy</span>
+          </div>
+        </div>
+        <div id="turning-points" class="turning-points"></div>
+      </div>
+
+      <h2>Moves</h2>
+      <ol id="moves" class="moves"></ol>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="new-dialog">
+    <form method="dialog">
+      <h2>New game</h2>
+      <p>Which side do you want to play? You can swap at any time.</p>
+      <div class="button-row">
+        <button value="white" class="primary">White (moves first)</button>
+        <button value="black">Black</button>
+        <button value="">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="setup-dialog">
+    <form id="setup-form" method="dialog">
+      <h2>Paste a game or position</h2>
+      <p>Paste a whole game (PGN) to review it, or one position (FEN) to play from it.</p>
+      <textarea id="setup-text" rows="8" spellcheck="false" aria-label="Game or position"></textarea>
+      <p id="setup-error" class="error" role="alert"></p>
+      <div class="button-row">
+        <button id="setup-go" type="button" class="primary">Open</button>
+        <button type="submit">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="saved-dialog">
+    <form method="dialog">
+      <h2>Saved games</h2>
+      <ul id="saved-list" class="saved-list"></ul>
+      <div class="button-row"><button>Close</button></div>
+    </form>
+  </dialog>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Saved games (personal, recreated by the app)
+data/
+
+# Local and OS files
+.env
+.DS_Store
